@@ -1,0 +1,16 @@
+@import '../../common/colors.scss';
+ 
+.movie-list, .show-list {
+ margin: 30px 0px 30px 0px;
+
+ h2 {
+  color: $font-secondary;
+  margin-bottom: 10px;
+  font-weight: 400;
+   text-transform: uppercase;
+ }
+}
+.movie-list hr, .show-list hr {
+background-color: $font-secondary;
+margin: 0px 0px 20px 0px;
+}
