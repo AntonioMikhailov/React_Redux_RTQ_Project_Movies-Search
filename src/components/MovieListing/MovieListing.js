@@ -54,7 +54,9 @@ export default function MovieListing() {
       <hr />
       {/* вызываем MovieCard  в цикле через renderMovies */}
       <div className="movie-container">
-      <Slider {...settings}>{renderMovies}</Slider>
+      <Slider {...settings}>
+        {renderMovies}
+        </Slider>
         </div>
     </div>
     {/* Для сериаов */}

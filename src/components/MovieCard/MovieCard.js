@@ -1,13 +1,14 @@
 import React from 'react'
-import { Link } from 'react-router-dom'
+import { Link, NavLink } from 'react-router-dom'
 import './MovieCard.scss'
 
 export default function MovieCard({data}) {
  
   return (
  <>
- <Link to={`/movie/${data.imdbID}`} target='_blank'>
+
 <div className="card-item">
+<NavLink to={`/movie/${data.imdbID}`} >
       <div className="card-inner">
         <div className="card-top">
           <img src={data.Poster} alt={data.Title} />
@@ -19,8 +20,9 @@ export default function MovieCard({data}) {
           </div>
         </div>
       </div>
+      </NavLink>
     </div>
-</Link>
+
  </>
   )
 }

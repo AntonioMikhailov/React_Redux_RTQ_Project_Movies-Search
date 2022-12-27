@@ -1,18 +1,17 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import MovieApi from "../../common/apis/MovieApi";
 import { APIKey } from "../../common/apis/MovieApiKeys";
-
 export const fetchAsyncMovies = createAsyncThunk( "movies/fetchAsyncMovies",
 // вставляем из useState в Header первичный запрос поиска 
-  async (currentSearch ) => {
-    const response = await MovieApi.get( `?apiKey=${APIKey}&s=${currentSearch}&type=movie `);
+  async (term ) => {
+    const response = await MovieApi.get( `?apiKey=${APIKey}&s=${term}&type=movie `);
     return response.data;
   }
 );
 // для Сериалов
 export const fetchAsyncShows = createAsyncThunk(  "movies/fetchAsyncShows",
-  async (currentSearch ) => {
-    const response = await MovieApi.get(`?apiKey=${APIKey}&s=${currentSearch}&type=series`);
+  async (term ) => {
+    const response = await MovieApi.get(`?apiKey=${APIKey}&s=${term}&type=series`);
     return response.data;
   }
 );
@@ -27,26 +26,22 @@ export const fetchAsyncMovieOrShowDetail = createAsyncThunk(  "movies/fetchAsync
 const initialState = {
   movies: {},  
   shows: {},
-  selectMovieOrShow: {},
-  currentSearch: 'Mission'   // создали первичный запрос
+  selectMovieOrShow: {},  
 };
 const movieSlice = createSlice({
   name: "movies",
   initialState,
-  reducers: { RemoveSelectedMovieOrShow: (state ) => {
+  reducers: {
+    RemoveSelectedMovieOrShow: (state ) => {
     state.selectMovieOrShow = {};
     },
-    // добавляем хранение запроса
-    getCurrentSearch: (state, action ) => {
-      state.currentSearch = action.payload;
-      },
   },
   //  extraReducers - в нем можем дополнительно определять action types
   extraReducers: {
     // Для ожидания - pending
     [fetchAsyncMovies.pending]: () => {
     },
-    // Когда запрос выполнен  - fullfilled - тогда можем начать передачу в Store  через Payload
+    // Когда запрос выполнен  - fullfilled - тогда можем начать передачу в Store  через PAyload
     [fetchAsyncMovies.fulfilled]: (state, { payload }) => {
       // добавляем в initial State  
       return { ...state, movies: payload };
@@ -65,5 +60,5 @@ const movieSlice = createSlice({
     },
   },
 });
-export const { RemoveSelectedMovieOrShow, getCurrentSearch } = movieSlice.actions;
+export const { RemoveSelectedMovieOrShow } = movieSlice.actions;
 export default movieSlice.reducer;

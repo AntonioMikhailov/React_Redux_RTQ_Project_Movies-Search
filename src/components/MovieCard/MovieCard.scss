@@ -5,9 +5,14 @@
   margin: 0px 10px 0px 10px;
   cursor: pointer;
   &:hover {
-    transform: scale(1.05);
+    transform: scale(1.02);
   }
 }
+
+//  .slick-slide div:hover {
+//   transform: scale(1.05);
+// }
+
 .card-top {
   overflow: hidden;  
   position: relative;

@@ -1,7 +1,7 @@
 import React, { useRef, useState } from "react";
-import { useDispatch } from "react-redux";
-import { Link } from "react-router-dom";
-import { fetchAsyncMovies, fetchAsyncShows, } from "../../features/movies/movieSlice";
+import { useDispatch, useSelector } from "react-redux";
+import { Link, NavLink } from "react-router-dom";
+import { fetchAsyncMovies, fetchAsyncShows, getCurrentSearch, } from "../../features/movies/movieSlice";
 import user from "../../images/user.png";
 import "./Header.scss";
 
@@ -13,11 +13,15 @@ export default function Header() {
     e.preventDefault();
     // проверка на заполнение
     if (term.length > 2) {
+    
       // передаем данные запроса поиска
       dispatch(fetchAsyncMovies(term));
       //  для Сериалов
       dispatch(fetchAsyncShows(term));
       setTerm("");
+      // добавляем dispatch и меняем в Store Новое значение - теперь уже не Mission
+      dispatch(getCurrentSearch(term))
+   
       placeholderText.current.placeholder = "Поиск фильмов и сериалов";
     } else {
        placeholderText.current.placeholder = "Введите название фильма >2 символов";
@@ -29,8 +33,10 @@ export default function Header() {
         <div className="container">
           <div className="header-wrapper">
             <div className="logo">
-              <Link to="/">Мои фильмы </Link>
+              <NavLink to="/">Мои фильмы </NavLink>
+              <NavLink to="/"> <div className='nav-link' >Главная</div></NavLink>
             </div>
+          
             <div className="search-bar">
               <form onSubmit={(e) => submitHandler(e)}>
                 <input
