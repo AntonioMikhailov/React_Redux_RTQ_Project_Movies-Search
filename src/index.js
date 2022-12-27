@@ -11,7 +11,7 @@ import { store } from './features/store';
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
 <Provider store={store}>
-  {/* Применяем HashRouter чтобы при  */}
+  {/* Применяем HashRouter чтобы при просмотре на Локальном ПК корректно работали ссылки между страницами. BrowserRouter - для хостинга   */}
   <HashRouter> 
   {/* <BrowserRouter> */}
   <App />

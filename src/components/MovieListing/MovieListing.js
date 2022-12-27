@@ -1,7 +1,7 @@
 import React, { useEffect, useState }  from 'react'
 import {   useDispatch, useSelector } from 'react-redux'
 import Slider from 'react-slick';
-import { fetchAsyncMovies,   fetchAsyncShows,   getCurrentPageMovies } from '../../features/movies/movieSlice';
+import { fetchAsyncMovies,   fetchAsyncShows,   getCurrentPageMovies, getCurrentPageShows } from '../../features/movies/movieSlice';
 import MovieCard from '../MovieCard/MovieCard';
 import './MovieListing.scss'
 export default function MovieListing() {
@@ -16,7 +16,7 @@ export default function MovieListing() {
   renderMovies = movies.Response === "True" ? (
     movies.Search.map((movie, index)=> {
    return <MovieCard  key={index} data={movie}/>
-   // если запрос будет некорректный - мало символов например то вернет текст {Response: 'False', Error: 'Too many results.'} и вставится текст в тег h3
+   // если запрос будет некорректный - мало символов например, то вернет текст {Response: 'False', Error: 'Too many results.'} и вставится текст в тег h3
     })  ) : (<h3> ОШИБКА: {movies.Error}</h3>)
     // для сериалов 
     renderShows = shows.Response === "True" ? (
@@ -50,36 +50,30 @@ export default function MovieListing() {
       const currSearch = useSelector(state => state.moviesReducer.currentSearch )
       const currentPageMovies = useSelector(state => state.moviesReducer.currentPageMovies )
       const currentPageShows = useSelector(state => state.moviesReducer.currentPageShows )
-      const numOfMovies = useSelector(state => state.moviesReducer.movies ) // это кол-во делим на 10  - сколько на странице за один раз и получим кол-во страниц
-    // console.log(numOfMovies.totalResults);
-
-      
+    
       const dispatch = useDispatch()
-      // передаем в State как начальное значение
+      // передаем в State как начальное значение currentPageMovies
       const [currPageMovies, setCurrentPageMovies] = useState(currentPageMovies)
       const [currPageShows, setCurrentPageShows] = useState(currentPageShows)
-      //Важно! Диспатч будем делать внутри useEffect  - он будет следить  за сменой currPage
+     
       useEffect( ()=> {
-        // console.log(currPage);
-        // передаем новую страницу в Store
+       // передаем новую страницу в Store
         dispatch(getCurrentPageMovies(currPageMovies))
+        dispatch(getCurrentPageShows(currPageShows))
         dispatch(fetchAsyncMovies({currSearch,  currPageMovies}))
         dispatch(fetchAsyncShows({currSearch,  currPageShows}))
-           // добавляем dispatch и меняем в Store Новое значение - теперь уже не Mission
+     
        }, [ currSearch, dispatch, currPageMovies, currPageShows])
-
       function handleNextPageMovie() { 
         if(currPageMovies >= 20) {
          setCurrentPageMovies(1)
       } else {
           setCurrentPageMovies(currPageMovies + 1)
-        
         }
-    
      }
       function handlePrevPageMovie() { 
         console.log('handlePrevPage', currPageMovies);
-        if(currPageMovies < 2 ) { // именно 2  т.к. один уже Ошибка
+        if(currPageMovies < 2 ) { //  
         setCurrentPageMovies(20)
       } else {
           setCurrentPageMovies((prev)=> {
@@ -87,20 +81,17 @@ export default function MovieListing() {
           })
         }
       }
-
       // ДЛЯ  СЕРИАЛОВ
       function handleNextPageShows() { 
         if(currPageShows >= 10) {
           setCurrentPageShows(1)
       } else {
         setCurrentPageShows(currPageShows + 1)
-        
         }
-    
      }
       function handlePrevPageShows() { 
         console.log('handlePrevPage', currPageShows);
-        if(currPageShows < 2 ) { // именно 2  т.к. один уже Ошибка
+        if(currPageShows < 2 ) { // 
           setCurrentPageShows(10)
       } else {
         setCurrentPageShows((prev)=> {
@@ -108,7 +99,6 @@ export default function MovieListing() {
           })
         }
       }
-
   return (
    <>
    <div className="movie-wrapper">
@@ -125,9 +115,8 @@ export default function MovieListing() {
         <button className='page-button'  onClick={handlePrevPageMovie}>{'<< 10 фильмов '}</button>
         <button className='page-button'  onClick={handleNextPageMovie}> {' 10 фильмов >> '}</button>
 </div>
-       
     </div>
-    {/* Для сериаов */}
+    {/* Для сериалов */}
     <div className="show-list">
       <h2>Сериалы</h2>
       <hr />
@@ -138,7 +127,6 @@ export default function MovieListing() {
       <button className='page-button'  onClick={handlePrevPageShows}>{'<< 10 сериалов '}</button>
         <button className='page-button'  onClick={handleNextPageShows}>{'10 сериалов >> '}</button>
       </div>
-     
     </div>
    </div>
    </>

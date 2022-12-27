@@ -10,7 +10,7 @@ export default function MovieDetail() {
  const dispatch = useDispatch();
   useEffect(()=> {
   dispatch(fetchAsyncMovieOrShowDetail(imdbID))
-  // Важно! надо очищать предыдущии данные со страницы Описания после каждого показа, иначе при повторном заходе будет сначала мелькать предыдущий контент а уже потом новый 
+  //  надо очищать предыдущие данные со страницы Описания после каждого показа, иначе при повторном заходе будет сначала мелькать предыдущий контент а уже потом новый 
   // очищаем store
   return ()=> { dispatch(RemoveSelectedMovieOrShow()) }
   },[dispatch, imdbID])  
