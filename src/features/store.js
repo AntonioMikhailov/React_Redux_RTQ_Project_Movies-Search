@@ -5,4 +5,4 @@ export const store = configureStore({
     moviesReducer:MovieSlice,
   }
 })
-// console.log(store.getState());
+ 
